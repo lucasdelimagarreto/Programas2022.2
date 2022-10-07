@@ -1,6 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <locale.h>
 #include <iostream>
 #define AUX = 2;
 using namespace std;
@@ -8,15 +5,13 @@ using namespace std;
 int main(){
     setlocale(LC_ALL, "Portuguese");
 
-    int quantAlunos = 10, turma[quantAlunos];
-
+    int quantAlunos;
+    cout << "Diga quantos alunos tem-se na turma: " << endl;
+    scanf("%d", &quantAlunos);
+    int turma[quantAlunos];
     for (size_t i = 0; i < quantAlunos; i++){
         turma[i] = i;
     }
-    
-    
-    
-    
     
     
     
