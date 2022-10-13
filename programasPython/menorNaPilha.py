@@ -1,3 +1,7 @@
+from ast import Str
+from tokenize import String
+
+
 def valorMinimo(listaPresentes, numOperacoes):
     aux = 0
     for i in range(numOperacoes):
@@ -10,10 +14,15 @@ listaPresentes = []
 
 for i in range(numOperacoes):
     menu = input()
-    if menu == "PUSH":
-        grauDeDiversao = int(input())
-        listaPresentes.append(grauDeDiversao)
-    if menu == "MIN":
-        print(valorMinimo(listaPresentes, numOperacoes))
-    if menu == "POP":
-        listaPresentes.pop()
+    
+    if String.is_integer(int(menu[-2::])):
+        grauDeDiversao = int(menu[-2::])
+        if menu == "PUSH":
+            listaPresentes.append(grauDeDiversao)
+    else:
+        if menu == "MIN":
+            print(valorMinimo(listaPresentes, numOperacoes))
+        if menu == "POP":
+            listaPresentes.pop()
+        else:
+            print("Erro!")
