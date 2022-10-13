@@ -11,7 +11,7 @@ int main(){
             lista.push(valor);
         }
         else if(valor == 2){
-            if (lista.front() != NULL){
+            if (!lista.empty()){
                 lista.pop();
             }
         }
