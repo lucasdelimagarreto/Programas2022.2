@@ -1,32 +1,28 @@
-#include <stdio.h>
+#include <bits/stdc++.h>
+using namespace std;
 int main(){
-
-    int pilha[2], aux, menuVal, valor, i = 0;
-    scanf("%d", &aux);
-    for (i = 0; i < aux; i++){
-        
-        if (i < 2){
-            scanf("%d   %d", &menuVal, &valor);
-            pilha[i] = valor;
+    int aux, valor;
+    scanf("%d\n", &aux);
+    queue<int> lista;
+    while(aux--){
+        scanf("%d", &valor);
+        if (valor == 1){
+            scanf("%d", &valor);
+            lista.push(valor);
         }
-        else{
-            scanf("\n%d", &menuVal);
-            if (menuVal == 2){
-                pilha[0] = pilha[1];
-                pilha[1] = 0;
-            }
-            if (menuVal == 3)
-            {
-                if (pilha[0] == 0 && pilha[1] == 0)
-                {
-                    printf("Empty!");
-                }else
-                {
-                    printf("%d\n", pilha[0]);
-                }
+        else if(valor == 2){
+            if (lista.front() != NULL){
+                lista.pop();
             }
         }
-        
+        else {
+            if (lista.empty()){
+                printf("Empty!\n");
+            }
+            else{
+                printf("%d\n", lista.front());
+            }
+        }
     }
     return 0;
 }
