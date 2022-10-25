@@ -1,18 +1,24 @@
 class Cliente():
     
-    def __init__(self, nome, sexo, cpf, gastos, estadia):
+    def __init__(self, nome, sexo, cpf, gastos, estadia, estadoEstadia):
         self.__nome = nome
         self.__sexo = sexo
         self.__cpf = cpf
         self.__gastos = gastos
         self.__estadia = estadia
+        self.__estadoEstadia = estadoEstadia
+
     
     def cadastraCliente(self):
         self.__nome = input("Digite o nome do cliente: ")
         self.__sexo = input("Digite a opção sexual do cliente: ")
         self.__cpf = int(input("Digite o cpf do cliente: "))
         self.__estadia = float(input("Digite o quantos dia o cliente permaneceu no hotel: "))
-        self.__gastos - float(input("Digite o quanto o cliente gastou na estadia: "))
+        self.__gastos = float(input("Digite o quanto o cliente gastou na estadia: "))
+        self.__estadoEstadia = True
+
+    
+
 
     def get_nome(self):
         return self.__nome
@@ -43,6 +49,12 @@ class Cliente():
 
     def set_gastos(self, gastos):
         self.__gastos = gastos
+
+    def get_estadoEstadia(self):
+        return self.__estadoEstadia
+
+    def set_estadoEstadia(self, estadoEstadia):
+        self.__estadoEstadia = estadoEstadia
 
 class Node:
 
@@ -170,5 +182,5 @@ clientes = Cliente()
 numClientes = int(input("Digite o numero de clientes: "))
 
 for i in range(numClientes):
-    minhaLinked.insere_inicio(Node(clientes.cadastraCliente))
+    minhaLinked.insere_final(Node(clientes.cadastraCliente))
 
