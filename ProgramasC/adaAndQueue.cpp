@@ -4,9 +4,9 @@ using namespace std;
 int main(){
 
     bool verificador = false;
-    string menu;
     int contador;
     cin >> contador;
+    string menu;
     deque<int> q;
     while (contador--){
         
