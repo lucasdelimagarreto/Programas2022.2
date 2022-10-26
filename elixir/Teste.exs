@@ -7,7 +7,6 @@ defmodule User do
     end
     else
       :error
-
     end
   end
 end
