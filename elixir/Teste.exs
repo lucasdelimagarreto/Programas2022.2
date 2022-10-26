@@ -1,5 +1,11 @@
-defmodule Test do
-  def soma(a, b) do
-    a + b
+defmodule User do
+  defstruct [:name, :id, :role]
+
+  def add_user(new_user, user) do
+    if user.role == :admin do
+      new_user
+    else
+      :error
+    end
   end
 end
