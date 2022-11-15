@@ -64,49 +64,53 @@ class List:
         
         self.__tamanho += 1
 
-    def buscaAluno(self,nome):  
-        aux = self.front 
+    def buscaAluno(self,nome):   
         if self.__tamanho == 1:
             if(nome == self.front.aluno):
                 return self.front
         else:
-            posicao = 0
-            fim = (self.__tamanho - 1)  
-            atual = (fim/2)
-            while(aux.anterior != None and aux.next != None):
-                if (atual > 0):
-                    for i in range (atual):
-                        aux = aux.next
-                        posicao += 1             
+            return False
+        aux = self.front
+        stop = False
+        posicao = 0
+        fim = (self.__tamanho - 1)  
+        atual = (fim/2)
+        while(not stop):
+            if (atual > 0):
+                for i in range (atual):
+                    aux = aux.next
+                    posicao += 1             
+            else:
+                for i in range (atual):
+                    aux = aux.anterior
+                    posicao -= 1         
+            if (aux.aluno == nome):            
+                return aux
+            else:
+                if (nome > aux.aluno):
+                    atual = (fim - posicao)/2             
                 else:
-                    for i in range (atual):
-                        aux = aux.anterior
-                        posicao -= 1         
-                if (aux.aluno == nome):            
-                    return aux
-                else:
-                    if (nome > aux.aluno):
-                        atual = (fim - posicao)/2             
-                    else:
-                        atual = (-fim + posicao)/2
-                    if (isinstance(atual,float)):
-                        atual = int(atual + 0.5)              
-                return False
+                    atual = (-fim + posicao)/2
+                if (isinstance(atual,float)):
+                    atual = int(atual + 0.5)        
+            if (posicao == 0 and posicao == fim):
+                stop = True
+        return False
 
     def tamanhoDaLista(self):
         return self.__tamanho
 
     def inserirDisciplina(self, nome):
             
-            objDisciplina = Disciplinas()
-            objDisciplina.set_nomeDisc(input("Digite o nome da disciplina: "))
-            stop = self.front
-            while stop != None:
-                if stop.aluno == nome:
-                    stop.disciplinas.append(objDisciplina)
-                    stop.disciplinas.sort()
+        objDisciplina = Disciplinas()
+        objDisciplina.set_nomeDisc(input("Digite o nome da disciplina: "))
+        stop = self.front
+        while stop != None:
+            if stop.aluno == nome:
+                stop.disciplinas.append(objDisciplina)
+                stop.disciplinas.sort()
                 
-                stop = stop.next
+            stop = stop.next
 
     def removerDisciplina(self, disciplina, nome):
 
@@ -115,11 +119,12 @@ class List:
         while stop != None:
             if stop.aluno == nome:
                 for i in range(len(stop.disciplinas)):
-                    if (stop.disciplinas[i] == disciplina):
-                            
+                    objDisciplina = stop.disciplinas[i] 
+                    if (objDisciplina.get_nomeDisc == disciplina):
+                        
                         stop.disciplinas.pop(i)
                         print("Aluno removido com sucesso da disciplina")
-                            
+                        
                         return
             
                 print("Esse aluno não está matriculado nessa disciplina, logo não pode ser removido dela")
@@ -132,12 +137,11 @@ class List:
         while stop != None:
             if stop.aluno == nome:
                 for i in range(len(stop.disciplinas)):
-                    for j in range(len(stop.disciplinas[i])):
-                        if (stop.disciplinas[i][j] == disciplina):
-                            if (len(stop.disciplinas[j]) > 2):
-                                print("Você já cadastrou duas notas nesta disciplina, caso queira modificar essas notas volte ao menu!\n")
-                            else:
-                                stop.disciplinas[i].append(nota)
+                    if (stop.disciplinas[i][j] == disciplina):
+                        if (len(stop.disciplinas[j]) > 2):
+                            print("Você já cadastrou duas notas nesta disciplina, caso queira modificar essas notas volte ao menu!\n")
+                        else:
+                            stop.disciplinas[i].append(nota)
             stop = stop.next
 
     #def removerNota(self, nota, disciplina, nome):
