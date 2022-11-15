@@ -3,5 +3,6 @@
         "iostream": "cpp",
         "array": "cpp",
         "regex": "cpp"
-    }
+    },
+    "python.analysis.typeCheckingMode": "off"
 }
