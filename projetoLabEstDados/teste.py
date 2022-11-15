@@ -65,11 +65,11 @@ class List:
         self.__tamanho += 1
 
     def buscaAluno(self,nome):   
-        if self.__tamanho == 1:
+        if (self.__tamanho == 1):
             if(nome == self.front.aluno):
                 return self.front
-        else:
-            return False
+            else:
+                return False
         aux = self.front
         stop = False
         posicao = 0
@@ -93,7 +93,7 @@ class List:
                     atual = (-fim + posicao)/2
                 if (isinstance(atual,float)):
                     atual = int(atual + 0.5)        
-            if (posicao == 0 and posicao == fim):
+            if (posicao == 0 or posicao == fim):
                 stop = True
         return False
 
