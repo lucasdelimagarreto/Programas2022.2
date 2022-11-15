@@ -109,6 +109,8 @@ class List:
                 stop = stop.next
 
     def removerDisciplina(self, disciplina, nome):
+
+        objDisciplina = Disciplinas()
         stop = self.front
         while stop != None:
             if stop.aluno == nome:
