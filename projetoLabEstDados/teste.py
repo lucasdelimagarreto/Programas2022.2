@@ -271,85 +271,18 @@ class List:
             disciplina = input("Digite a disciplina do aluno: ")
             return disciplina
         
-    
-    def __str__(self): #deletar essa função junto com os testes manuais antes de mandar para Allan
-        output = ""
-        if self.front:
-            aux = self.front
-            output += ""
-            while (aux): 
-                output += "[Aluno: {}]\n[Disciplinas e notas: {}]\n".format(aux.aluno, aux.disciplinas)
-            
-                if(aux.next):
-                    output += "\n"
-                aux = aux.next
-                output += " "
-            else:
-                output += "[]"
-        return output
-  
-# daqui para baixo, testes manuais de metódos, organizar menu
 
 controleAcademico = List()
-
-controleAcademico.enqueueAluno("Francileudo")
-print(controleAcademico)
-print()
-controleAcademico.enqueueAluno("Tharcio")
-print(controleAcademico)
-print()
-controleAcademico.enqueueAluno("Beto")
-print(controleAcademico)
-print()
-controleAcademico.enqueueAluno("Carla")
-print(controleAcademico)
-print()
-controleAcademico.enqueueAluno("Daniel")
-print(controleAcademico)
-print()
-
-print(controleAcademico)
-
-controleAcademico.inserirDisciplina("Estrutura de Dados", "Tharcio")
-controleAcademico.inserirDisciplina("Lab. de Estrutura de Dados", "Tharcio")
-controleAcademico.inserirDisciplina("Informática na Educação", "Tharcio")
-
-print(controleAcademico)
-controleAcademico.inserirDisciplina("Estrutura de Dados", "Francileudo")
-print(controleAcademico)
-controleAcademico.inserirNota(10, "Estrutura de Dados", "Tharcio")
-print(controleAcademico)
-controleAcademico.inserirNota(5, "Estrutura de Dados", "Tharcio")
-print(controleAcademico)
-controleAcademico.inserirNota(10, "Estrutura de Dados", "Tharcio")
-print(controleAcademico)
-print(controleAcademico.visualizarMediaEmDisciplina("Tharcio", "Estrutura de Dados"))
-print(controleAcademico.visualizarMediaEmDisciplina("Francileudo", "Estrutura de Dados"))
-print(controleAcademico.tamanhoDaLista())
-
-controleAcademico.removerDisciplina("Lab. de Estrutura de Dados", "Francileudo")
-controleAcademico.removerDisciplina("Lab. de Estrutura de Dados", "Tharcio")
-
-controleAcademico.removeAluno("Daniel")
-print(controleAcademico)
-controleAcademico.removeAluno("Beto")
-
-print(controleAcademico)
-
-# daqui para baixo refere-se a código do menu, completando ele à medida que o código fica pronto
-
-objDisciplina = Disciplinas()
 
 choose = -1
 continuaMenu = 1
 
 while (continuaMenu != 0):
-    print("-" * 50)
+    print("-" * 70)
     print("Controle Acadêmico")
     print()
-    print("1 - Cadastrar aluno\n \n2 - Cadastrar disciplinas\n \n3 - Cadastrar notas em disciplina\n \n4 - Remover aluno\n \n5 - Remover disciplina\n \n6 - Remover nota de disciplina\n \n7 - Atualizar dados do aluno\n \n8 - Atualizar disciplina de aluno\n \n9 - Atualizar nota de disciplina\n \n10 - Visualize a média de um aluno\n \n11 - Visualize quais alunos estão com a média menor que 7\n \n12 - Visualize quais alunos estão com média maior ou igual a 7\n \n13 - Visualize as notas das disciplinas cadastradas em um aluno\n \n")
-    print()
-    print("-" * 50)
+    print("1 - Cadastrar aluno\n \n2 - Cadastrar disciplinas\n \n3 - Cadastrar notas em disciplina\n \n4 - Remover aluno\n \n5 - Remover disciplina\n \n6 - Remover nota de disciplina\n \n7 - Atualizar dados do aluno\n \n8 - Atualizar disciplina de aluno\n \n9 - Atualizar nota de disciplina\n \n10 - Visualize a média de um aluno\n \n11 - Visualize quais alunos estão com a média menor que 7\n \n12 - Visualize quais alunos estão com média maior ou igual a 7\n \n13 - Visualize as notas das disciplinas cadastradas em um aluno")
+    print("-" * 70)
     choose = int(input("Digite um número: "))
 
     #1 e para pedir nome e 2 para pedir disciplina  controleAcademico.pedeInfo(X)
