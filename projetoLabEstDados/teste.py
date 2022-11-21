@@ -335,7 +335,7 @@ while (continuaMenu != 0):
     
     elif (choose == 7):
         print("Atualizar dados do aluno, no nosso caso o nome dele apenas")
-        controleAcademico.buscaAluno(aluno)
+        controleAcademico.buscaAluno(controleAcademico.pedeInfo(1))
         print()
 
         continuaMenu = int(input("Deseja sair do Programa agora?\nDigite 0 para sim e 1 para não: "))
@@ -357,7 +357,7 @@ while (continuaMenu != 0):
         aluno = input("Digite o nome do aluno: ")
         disciplina = input("digite o nome da disciplina: ")
 
-        print(controleAcademico.visualizarMediaEmDisciplina(aluno, disciplina))
+        print(controleAcademico.visualizarMediaEmDisciplina(controleAcademico.pedeInfo(1), controleAcademico.pedeInfo(2)))
         print()
 
         continuaMenu = int(input("Deseja sair do Programa agora?\nDigite 0 para sim e 1 para não: "))
