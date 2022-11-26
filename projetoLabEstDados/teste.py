@@ -1,7 +1,11 @@
-#
-#   GAMBIARRA A GENTE ATE ACEITA, O QUE NÃO ACEITAMOS E A REPROVAÇÃO!
-#
-
+def pedeInfo(aux):
+        if(aux == 1):
+            nome = input("Digite nome do aluno: ")
+            return nome
+        else:
+            disciplina = input("Digite a disciplina do aluno: ")
+            return disciplina
+            
 class Disciplinas:
     
     def __init__(self, nomeDisc: str, nota1: float, nota2: float):
@@ -262,16 +266,7 @@ class List:
                 aux = aux.next
 
             return "O Aluno não está cadastrado no controle acadêmico ou você digitou o nome dele errado!"
-    
-    def pedeInfo(aux):
-        if(aux == 1):
-            nome = input("Digite nome do aluno: ")
-            return nome
-        elif(aux == 2):
-            disciplina = input("Digite a disciplina do aluno: ")
-            return disciplina
         
-
 controleAcademico = List()
 
 choose = -1
@@ -289,8 +284,8 @@ while (continuaMenu != 0):
 
     if (choose == 1):
 
-        aluno = input("Digite o nome do aluno: ")
-        controleAcademico.enqueueAluno(controleAcademico.pedeInfo(1))
+        aluno = pedeInfo(1)
+        controleAcademico.enqueueAluno(aluno)
         print("Aluno cadastrado")
         print()
 
