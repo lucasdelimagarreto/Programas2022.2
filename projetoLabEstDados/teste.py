@@ -1,4 +1,5 @@
 def pedeInfo(aux):
+
         if(aux == 1):
             nome = input("Digite nome do aluno: ")
             return nome
@@ -11,51 +12,35 @@ def pedeInfo(aux):
         else:
             print("ERROR!")
 
-class Disciplinas:
+class Disciplina:
 
-    def __init__(self, nomeDisc, nota1, nota2):
-        self.__nomeDisc = nomeDisc
-        self.__nota1 = nota1
-        self.__nota2 = nota2
+    def __init__(self, nomeDisc: str, nota1: float, nota2: float):
+        self.nomeDisc = nomeDisc
+        self.nota1 = nota1
+        self.nota2 = nota2
+        self.proximo = None
 
-    def get_nomeDisc(self):
-        return self.__nomeDisc
+class ListaDisciplinas:
 
-    def set_nomeDisc(self, nomeDisc):
-        self.__nomeDisc = nomeDisc
+    def __init__(self):
+        self.frente = None 
 
-    def get_nota1(self):
-        return self.__nota1
+    def isEmpty(self):
+        return self.frente == None
 
-    def set_nota1(self, nota1):
-        self.__nota1 = nota1
+    def frente(self):
+        return self.frente
 
-    def get_nota2(self):
-        return self.__nota2
-
-    def set_nota2(self, nota2):
-        self.__nota2 = nota2
-
+    def enqueueDisciplina(self):
+        novaDisciplina = Disciplina(pedeInfo(2), None, None)
+        novaDisciplina.proximo = self.frente
+        self.frente = novaDisciplina
+    
 class Aluno:
 
-    def __init__(self, nomeAluno: str, disciplinas: Disciplinas):
-        self.__nomeAluno = nomeAluno
-        self.__disciplinas = [disciplinas]
-
-    def get_nomeAluno(self):
-        return self.__nomeAluno
-
-    def set_nomeAluno(self, nomeAluno):
-        self.__nomeAluno = nomeAluno
-
-    def get_disciplinas(self):
-        return self.__disciplinas
-
-    def set_disciplinas(self, disciplinas):
-        self.__disciplinas = disciplinas
-
-    def adicionarDiscilpinas(self, disciplinas):
-        self.__disciplinas.append(disciplinas)
+    def __init__(self, nomeAluno: str):
+        self.nomeAluno = nomeAluno
+        self.listaDisciplinas = ListaDisciplinas()
 
 class Node:
 
@@ -68,24 +53,33 @@ class List:
 
     def __init__(self):
         self.front = None 
-        #self.rear = None
         self.__tamanho = 0
+    
+    def isEmpty(self):
+        return self.front == None 
 
-    def enqueueAluno(self, aluno):
+    def __tamanho(self): 
+        return self.__tamanho
+
+    def front(self):
+        return self.front
+
+    def enqueueAluno(self, aluno: str):
         aux = self.front
         anterior = None
         stop = False
 
         while aux != None and not stop:
 
-            if aux.aluno > aluno:
+            if aux.aluno.nomeAluno > aluno:
                 stop = True
 
             else:
                 anterior = aux
                 aux = aux.next
 
-        temp = Node(aluno)
+        var = Aluno(aluno)
+        temp = Node(var)
 
         if anterior == None:
             temp.next = self.front
@@ -99,7 +93,7 @@ class List:
 
     def buscaAluno(self,nome):   
         if (self.__tamanho == 1):
-            if(nome == self.front.aluno):
+            if(nome == self.front.aluno.nomeAluno):
                 return self.front
             else:
                 return False
@@ -117,10 +111,10 @@ class List:
                 for i in range (atual):
                     aux = aux.anterior
                     posicao -= 1         
-            if (aux.aluno == nome):            
+            if (aux.aluno.nomeAluno == nome):            
                 return aux
             else:
-                if (nome > aux.aluno):
+                if (nome > aux.aluno.nomeAluno):
                     atual = (fim - posicao)/2             
                 else:
                     atual = (-fim + posicao)/2
@@ -130,20 +124,25 @@ class List:
                 stop = True
         return "Aluno não encontrado"
 
-    def tamanhoDaLista(self):
-        return self.__tamanho
+    def buscaDisciplina(self):
+
+        disciplina = pedeInfo(2)
+        aluno = controleAcademico.buscaAluno(pedeInfo(1))
+        aux = aluno.aluno.listaDisciplinas.frente
+
+        while(aux != None):
+            if (aux.nomeDisc == disciplina):
+                return aux
+            aux = aux.proximo
 
     def inserirDisciplina(self, nome):
 
-        objDisciplina = Disciplinas(None, None, None)
-        objDisciplina.set_nomeDisc(pedeInfo(2))
         aux = controleAcademico.buscaAluno(nome)
-        aux.disciplinas.append(objDisciplina)
-        aux.disciplinas.sort()
+        aux.aluno.listaDisciplinas.enqueueDisciplina()
 
     def removerDisciplina(self, disciplina, nome):
 
-        objDisciplina = Disciplinas(None, None, None)
+        objDisciplina = Disciplina(None, None, None)
         stop = self.front
         while stop != None:
             if stop.aluno == nome:
@@ -155,135 +154,80 @@ class List:
                         print("Aluno removido com sucesso da disciplina")
 
                         return
-            
+
                 print("Esse aluno não está matriculado nessa disciplina, logo não pode ser removido dela")
 
             stop = stop.next
 
-    def inserirNota(self, disciplina, nome):
+    def inserirNota(self):
 
-        objDisciplina = Disciplinas(None, None, None)
-        stop = self.front
-        while stop != None:
+        var = controleAcademico.buscaDisciplina()
+        
+        while(aux):
+            nota = int(input("Qual nota deseja adicionar 1a ou 2a:"))
 
-            if stop.aluno == nome:
+            if(nota == 1):
+                var.nota1 = pedeInfo(3)
+                print("A nota foi definida para: ", var.nota1)
+                aux = False
 
-                for i in range(len(stop.disciplinas)):
-
-                    if (stop.disciplinas[i] == disciplina):
-
-                        if (objDisciplina.get_nota1 != None and objDisciplina.get_nota2 != None):
-                            print("Você já cadastrou duas notas nesta disciplina, caso queira modificar essas notas volte ao menu!\n")
-
-                        else:
-                            while(aux):
-                                nota = int(input("Qual nota deseja adicionar 1a ou 2a:"))
-
-                                if(nota == 1):
-                                    objDisciplina = stop.disciplinas[i]
-                                    objDisciplina.set_nota1 = pedeInfo(3)
-                                    stop.disciplinas[i] = objDisciplina.set_nota1
-                                    aux = False
-
-                                elif(nota == 2):
-                                    objDisciplina = stop.disciplinas[i]
-                                    objDisciplina.set_nota2 = pedeInfo(3)
-                                    stop.disciplinas[i] = objDisciplina.set_nota2
-                                    aux = False
-
-                                else:
-                                    print("Digite um numero entre 1 e 2.")
-                                    aux = True
-            stop = stop.next
-
-    def removerNota(self, disciplina, nome):
-
-        objDisciplina = Disciplinas(None, None, None)
-        stop = self.front
-        while stop != None:
-
-            if stop.aluno == nome:
-
-                for i in range(len(stop.disciplinas)):
-
-                    if (stop.disciplinas[i] == disciplina):
-                        print(stop.disciplinas[i])
-
-                        while(aux):
-                            nota = int(input("Qual nota deseja remover 1a ou 2a:"))
-
-                            if(nota == 1):
-                                objDisciplina = stop.disciplinas[i]
-                                objDisciplina.set_nota1 = None
-                                stop.disciplinas[i] = objDisciplina
-                                aux = False
-
-                            elif(nota == 2):
-                                objDisciplina = stop.disciplinas[i]
-                                objDisciplina.set_nota2 = None
-                                stop.disciplinas[i] = objDisciplina
-                                aux = False
-
-                            else:
-                                print("Digite um numero entre 1 e 2")
-                                aux = True
-            stop = stop.next
-
-    def removeAluno(self, aluno):
-        if self.isEmpty():
-            print("O Controle Acadêmico está vazio, não há alunos cadastrados")
-        elif self.front.aluno == aluno:
-            self.front = self.front.next
-        else:
-            anterior = None
-            aux = self.front
-
-            while aux and aux.aluno != aluno:
-                anterior = aux
-                aux = aux.next
-
-            if aux:
-                anterior.next = aux.next
+            elif(nota == 2):
+                var.nota2 = pedeInfo(3)
+                print("A nota foi definida para: ", var.nota2)
+                aux = False
 
             else:
-                anterior.next = None
+                print("Digite um numero entre 1 e 2.")
+                aux = True             
+    
+    def removerNota(self):
 
+        temp = controleAcademico.buscaDisciplina
+
+        if (temp.nota1 == None and temp.nota2 == None):
+            print("Voce ja removeu as notas deste aluno!\n")
+
+        else:
+            while(aux):
+                nota = int(input("Qual nota deseja remover 1a ou 2a:"))
+
+                if(nota == 1):
+                    temp.nota1 = None
+                    if(temp.nota1 == None):
+                        print("A nota foi definida para: 0")
+                    aux = False
+
+                elif(nota == 2):
+                    temp.nota2 = None
+                    print("A nota foi definida para: ", temp.nota2)
+                    aux = False
+
+                else:
+                    print("Digite um numero entre 1 e 2.")
+                    aux = True
+
+    def removeAluno(self, aluno):
+        
+        if self.isEmpty():
+            print("O Controle Acadêmico está vazio, não há alunos cadastrados")
+        
+        elif self.front.aluno == aluno:
+            self.front = self.front.next
+        
+        else:
+            aux = controleAcademico.buscaAluno(aluno)
+            aux.anterior.next = aux.next
+            aux.next.anterior = aux.anterior
+            
             self.__tamanho -= 1
-
-
-    def isEmpty(self):
-        return self.front == None 
-
-    def __tamanho(self): 
-        return self.__tamanho
-
-    def front(self):
-        return self.front
 
     #def rear(self):
     #   return self.rear
 
-    def visualizarMediaEmDisciplina(self, aluno, disciplina):
-        output = ""
-
-        if self.front:
-            aux = self.front
-            output += ""
-
-            while (aux):
-                if (aux.aluno == aluno):
-                    for i in range(len(aux.disciplinas)):
-                        for j in range( len( aux.disciplinas[i] ) ):
-                            if (aux.disciplinas[i][j] == disciplina):
-                                if (len(aux.disciplinas[j]) > 2):
-                                    media = (aux.disciplinas[i][1] + aux.disciplinas[i][2] ) / 2
-                                    output += "[Aluno: {}]\n[Média em {}: {}]\n".format(aux.aluno, disciplina, media)
-                                else:
-                                    return "O Aluno não tem as duas notas cadastradas nessa disciplina"
-
-                            return output
-
-            aux = aux.next
+    def visualizarMediaEmDisciplina(self):
+        aux = controleAcademico.buscaDisciplina()
+        media = aux.aluno.listaDisciplina.nota1 / aux.aluno.listaDisciplina.nota2
+        print("A media é: ", media)
 
     def visualizacaoCompletaDeAluno(self, aluno):
         if self.front:
@@ -298,8 +242,8 @@ class List:
 
             return "O Aluno não está cadastrado no controle acadêmico ou você digitou o nome dele errado!"
 
-controleAcademico = List()
 
+controleAcademico = List()
 choose = -1
 continuaMenu = 1
 
@@ -313,25 +257,26 @@ while (continuaMenu != 0):
 
     #1 e para pedir nome e 2 para pedir disciplina  controleAcademico.pedeInfo(X)
 
-    if (choose == 1):
+    if (choose == 1): #FUNCIONA
         # 1 - Cadastrar aluno
         controleAcademico.enqueueAluno(pedeInfo(1))
-        print("Aluno cadastrado")
+        print("Aluno de nome",controleAcademico.front.aluno.nomeAluno, " cadastrado")
         print()
 
-    elif (choose == 2):
+    elif (choose == 2): #FUNCIONA
         # 2 - Cadastrar disciplinas
 
-        controleAcademico.inserirDisciplina(pedeInfo(1))
+        aux = controleAcademico.inserirDisciplina(pedeInfo(1))
+        print("A disciplina inserida foi: ", aux)
         print()
 
-    elif (choose == 3):
+    elif (choose == 3): #FUNCIONA
         # 3 - Cadastrar notas em disciplina
         print("Cadastrar notas!")
         controleAcademico.inserirNota(pedeInfo(2), pedeInfo(1))
         print()
 
-    elif (choose == 4):
+    elif (choose == 4): 
         # 4 - Remover aluno
         print("Cadastrar notas!")
         controleAcademico.removeAluno(pedeInfo(1))
@@ -343,24 +288,40 @@ while (continuaMenu != 0):
         controleAcademico.removerDisciplina(pedeInfo(2) , pedeInfo(1))
         print()
 
-    elif (choose == 6):
+    elif (choose == 6): #FUNCIONA
+        # 6 - Remover nota de disciplina
+
         print("remover nota da disciplina do aluno")
-        controleAcademico.removerNota(pedeInfo(2), pedeInfo(1))
+        controleAcademico.removerNota()
         print()
     
-    elif (choose == 7):
+    elif (choose == 7): #FUNCIONA
+        # 7 - Atualizar dados do aluno
+
         print("Atualizar dados do aluno, no nosso caso o nome dele apenas")
-        controleAcademico.buscaAluno(pedeInfo(1))
+        controleAcademico.buscaAluno()
+        var = input("Digite o novo nome do aluno: ")
+        controleAcademico.front.aluno.nomeAluno = var
+        print("O atual nome do al")
         print()
 
-    elif (choose == 8):
-        print("Atualizar disciplina do aluno, no caso o nome da disciplina")
+    elif (choose == 8): #FUNCIONA
+        # 8 - Atualizar disciplina de aluno
+
+        print("Atualizar disciplina do aluno.(no caso o nome da disciplina)")
+        disciplina = controleAcademico.buscaDisciplina()
+        disciplina.nomeDisc = pedeInfo(2)
+        print("O nome da disciplina foi alterado para: ", disciplina.nomeDisc)
         print()
 
     elif (choose == 9):
+        # 9 - Atualizar nota de disciplina
+
         print("Atualizar nota de disciplina de aluno")
+        controleAcademico.inserirNota()
+
         print()
-    
+
     elif (choose == 10):
 
         aluno = input("Digite o nome do aluno: ")
