@@ -19,6 +19,7 @@ class Disciplina:
         self.nota1 = nota1
         self.nota2 = nota2
         self.proximo = None
+        self.anterior = None
 
 class ListaDisciplinas:
 
@@ -33,8 +34,40 @@ class ListaDisciplinas:
 
     def enqueueDisciplina(self):
         novaDisciplina = Disciplina(pedeInfo(2), None, None)
-        novaDisciplina.proximo = self.frente
-        self.frente = novaDisciplina
+        if(self.isEmpty):
+            self.frente = novaDisciplina
+        else:
+            novaDisciplina.proximo = self.frente
+            self.frente.anterior = novaDisciplina
+            self.frente = novaDisciplina
+        print("A disciplina inserida foi: ", novaDisciplina.nomeDisc)
+    
+    def dequeueDisciplina(self,disciplina):
+
+        aux = self.buscaDisciplina(disciplina)
+
+        if(self.isEmpty):
+            return "O aluno não está matriculado em nenhuma disciplina!"
+        elif(aux.nomeDisc == self.frente):
+            aux = aux.proximo
+            aux.anterior = None
+        elif(not aux):
+            return "Esse aluno não está matriculado nessa disciplina, logo não pode ser removido dela"
+        else:
+            aux.anterior.next = aux.next
+            aux.next.anterior = aux.anterior
+        print("Aluno removido com sucesso da disciplina")
+
+#busca disciplina está recebendo a lista de disciplina do aluno
+    def buscaDisciplina(self, disciplina):
+
+        aux = self.frente
+
+        while(aux != None):
+            if (aux.nomeDisc == disciplina):
+                return aux
+            aux = aux.proximo
+        return False
 
     def __str__(self):
         output = ""
@@ -139,42 +172,14 @@ class List:
                 stop = True
         return "Aluno não encontrado"
 
-    def buscaDisciplina(self, nome, disciplina):
-
-        aluno = controleAcademico.buscaAluno(nome)
-        aux = aluno.aluno.listaDisciplinas.frente
-
-        while(aux != None):
-            if (aux.nomeDisc == disciplina):
-                return aux
-            aux = aux.proximo
-
     def inserirDisciplina(self, nome):
 
-        aux = controleAcademico.buscaAluno(nome)
+        aux = self.buscaAluno(nome)
         aux.aluno.listaDisciplinas.enqueueDisciplina()
-
-    def removerDisciplina(self, nome, disciplina):
-
-        aux = controleAcademico.buscaAluno(nome)
-        stop = aux.aluno.listaDisciplinas
-        count = 0
-
-        while (stop != None):
-            if (stop.nomeDisc == disciplina):
-
-                stop.disciplina.pop(count)
-                print("Aluno removido com sucesso da disciplina")
-                return
-
-            count += 1
-            stop = stop.diciplina.proximo
-
-        print("Esse aluno não está matriculado nessa disciplina, logo não pode ser removido dela")
 
     def inserirNota(self):
 
-        var = controleAcademico.buscaDisciplina(pedeInfo(1), pedeInfo(2))
+        var = self.buscaAluno(pedeInfo(1)).aluno.listaDisciplinas.buscaDisciplina(pedeInfo(2))
         aux = True
 
         while(aux):
@@ -194,9 +199,30 @@ class List:
                 print("Digite um numero entre 1 e 2.")
                 aux = True
 
+    def removeAluno(self, aluno):
+
+        if self.isEmpty():
+            print("O Controle Acadêmico está vazio, não há alunos cadastrados")
+
+        elif self.front.aluno.nomeAluno == aluno:
+            self.front = self.front.next
+            self.front.anteiror = None
+
+        else:
+            aux = self.buscaAluno(aluno)
+            aux.anterior.next = aux.next
+            aux.next.anterior = aux.anterior
+
+        self.__tamanho -= 1
+
+    def removerDisciplina(self, nome, disciplina):       
+        
+        aux = self.buscaAluno(nome)
+        aux.aluno.listaDisciplinas.dequeueDisciplina(disciplina)                
+
     def removerNota(self):
 
-        temp = controleAcademico.buscaDisciplina(pedeInfo(1), pedeInfo(2))
+        temp = self.buscaAluno(pedeInfo(1)).listaDisciplinas.buscaDisciplina(pedeInfo(2))
         aux = True
 
         if (temp.nota1 == None and temp.nota2 == None):
@@ -220,29 +246,6 @@ class List:
                 else:
                     print("Digite um numero entre 1 e 2.")
                     aux = True
-
-    def removeAluno(self, aluno):
-
-        if self.isEmpty():
-            print("O Controle Acadêmico está vazio, não há alunos cadastrados")
-
-        elif self.front.aluno == aluno:
-            self.front = self.front.next
-
-        else:
-            aux = controleAcademico.buscaAluno(aluno)
-            anterior = aux
-            aux = aux.next
-            #aux.anterior.next = aux.next
-            #aux.next.anterior = aux.anterior
-
-            if aux:
-                anterior.next = aux.next
-
-            else:
-                anterior.next = None
-
-        self.__tamanho -= 1
 
     #def rear(self):
     #   return self.rear
@@ -270,8 +273,21 @@ class List:
         if self.front:
             aux = self.front
 
-            while (aux != None):
-                if (self.visualizarMediaEmDisciplina(aux.aluno.nomeAluno, disciplina) < 7):
+            while (aux):
+                if (self.visualizarMediaEmDisciplina(aux.aluno.nomeAluno, disciplina) < 7.0):
+                    output += "{}\n".format(aux.aluno.nomeAluno)
+                    return output
+
+                aux = aux.next
+
+    def alunosAprovados(self, disciplina):
+        output = "Aprovados em {}:\n".format(disciplina)
+
+        if self.front:
+            aux = self.front
+
+            while (aux):
+                if (self.visualizarMediaEmDisciplina(aux.aluno.nomeAluno, disciplina) >= 7.0):
                     output += "{}\n".format(aux.aluno.nomeAluno)
                     return output
 
@@ -280,8 +296,6 @@ class List:
 controleAcademico = List()
 choose = -1
 continuaMenu = 1
-
-print(controleAcademico.aluno.nomeAluno)
 
 while (continuaMenu != 0):
     print("-" * 70)
@@ -296,7 +310,7 @@ while (continuaMenu != 0):
     if (choose == 1): #FUNCIONA ok
         # 1 - Cadastrar aluno
         controleAcademico.enqueueAluno(pedeInfo(1))
-        print("Aluno de nome",controleAcademico.front.aluno.nomeAluno, " cadastrado")
+        #print("Aluno de nome",controleAcademico.front.aluno.nomeAluno, " cadastrado")
         print()
 
     elif (choose == 2): #FUNCIONA ok
@@ -363,13 +377,12 @@ while (continuaMenu != 0):
         print("A média é: ", controleAcademico.visualizarMediaEmDisciplina(pedeInfo(1), pedeInfo(2)))
         print()
 
-    elif (choose == 11):
-        print("Visualizar os nomes dos alunos que estão com média menor que 7")
-        controleAcademico.alunosReprovados(pedeInfo(2))
+    elif (choose == 11): #funcionando ok
+        print(controleAcademico.alunosReprovados(pedeInfo(2)))
         print()
 
-    elif (choose == 12):
-        print("Visualizar os nomes dos alunos que estão com média maior ou igual a 7")
+    elif (choose == 12): #funcionando ok
+        print(controleAcademico.alunosAprovados(pedeInfo(2)))
         print()
 
     elif (choose == 13): #funcionando ok
