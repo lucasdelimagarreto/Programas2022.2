@@ -251,22 +251,28 @@ class List:
     #   return self.rear
 
     def visualizarMediaEmDisciplina(self, nome, disciplina):
-        aux = controleAcademico.buscaDisciplina(nome, disciplina)
-        media = (aux.nota1 + aux.nota2) / 2
-        return media
+        aux = self.buscaAluno(nome).aluno.listaDisciplina.buscaDisciplina(disciplina)
+        if(aux.nota1 == None):
+            return "Não é possivel calcular a média pois o aluno não possui a primeira nota da disciplina"
+        elif(aux.nota2 == None):
+            return "Não é possivel calcular a média pois o aluno não possui a segunda nota da disciplina"
+        else:    
+            media = (aux.nota1 + aux.nota2) / 2
+            return media
 
     def visualizacaoCompletaDeAluno(self, aluno):
-        if self.front:
-            aux = self.front
+        aux = self.buscaAluno(aluno)
+        temp = aux.aluno.listaDisciplinas.frente
+        while (temp != None):
+            #alguém pode completar esse print, eu não sou bom com prints 
+            #a função já está percorrendo todas as diciplinas só basta 
+            #printar os atributos de cada disciplina, o codigo para acessar cada um seria
+            # disciplina : temp.nomeDisc , nota1 : temp.nota1 ...
+            print("Disciplina")
+            temp = temp.proximo
 
-            while (aux):
-                if (aux.aluno.nomeAluno == aluno):
-                    output = "Aluno: {}\nDisciplinas e notas: {}\n".format(aux.aluno.nomeAluno, aux.aluno.listaDisciplinas)
-                    return output
-
-                aux = aux.next
-
-            return "O Aluno não está cadastrado no controle acadêmico ou você digitou o nome dele errado!"
+     
+    
 
     def alunosReprovados(self, disciplina):
         output = "Reprovados em {}:\n".format(disciplina)
@@ -316,8 +322,7 @@ while (continuaMenu != 0):
     elif (choose == 2): #FUNCIONA ok
         # 2 - Cadastrar disciplinas
 
-        aux = controleAcademico.inserirDisciplina(pedeInfo(1))
-        print("A disciplina inserida foi: ", aux)
+        controleAcademico.inserirDisciplina(pedeInfo(1))
         print()
 
     elif (choose == 3): #FUNCIONA ok
