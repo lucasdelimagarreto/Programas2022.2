@@ -139,10 +139,9 @@ class List:
                 stop = True
         return "Aluno não encontrado"
 
-    def buscaDisciplina(self):
+    def buscaDisciplina(self, nome, disciplina):
 
-        disciplina = pedeInfo(2)
-        aluno = controleAcademico.buscaAluno(pedeInfo(1))
+        aluno = controleAcademico.buscaAluno(nome)
         aux = aluno.aluno.listaDisciplinas.frente
 
         while(aux != None):
@@ -155,28 +154,27 @@ class List:
         aux = controleAcademico.buscaAluno(nome)
         aux.aluno.listaDisciplinas.enqueueDisciplina()
 
-    def removerDisciplina(self, disciplina, nome):
+    def removerDisciplina(self, nome, disciplina):
 
-        objDisciplina = Disciplina(None, None, None)
-        stop = self.front
-        while stop != None:
-            if stop.aluno == nome:
-                for i in range(len(stop.disciplinas)):
-                    objDisciplina = stop.disciplinas[i]
-                    if (objDisciplina.get_nomeDisc == disciplina):
+        aux = controleAcademico.buscaAluno(nome)
+        stop = aux.aluno.listaDisciplinas
+        count = 0
 
-                        stop.disciplinas.pop(i)
-                        print("Aluno removido com sucesso da disciplina")
+        while (stop != None):
+            if (stop.nomeDisc == disciplina):
 
-                        return
+                stop.disciplina.pop(count)
+                print("Aluno removido com sucesso da disciplina")
+                return
 
-                print("Esse aluno não está matriculado nessa disciplina, logo não pode ser removido dela")
+            count += 1
+            stop = stop.diciplina.proximo
 
-            stop = stop.next
+        print("Esse aluno não está matriculado nessa disciplina, logo não pode ser removido dela")
 
     def inserirNota(self):
 
-        var = controleAcademico.buscaDisciplina()
+        var = controleAcademico.buscaDisciplina(pedeInfo(1), pedeInfo(2))
         aux = True
 
         while(aux):
@@ -198,7 +196,7 @@ class List:
 
     def removerNota(self):
 
-        temp = controleAcademico.buscaDisciplina()
+        temp = controleAcademico.buscaDisciplina(pedeInfo(1), pedeInfo(2))
         aux = True
 
         if (temp.nota1 == None and temp.nota2 == None):
@@ -249,10 +247,10 @@ class List:
     #def rear(self):
     #   return self.rear
 
-    def visualizarMediaEmDisciplina(self):
-        aux = controleAcademico.buscaDisciplina()
-        media = (aux.aluno.listaDisciplina.nota1 + aux.aluno.listaDisciplina.nota2) / 2
-        print("A media é: ", media)
+    def visualizarMediaEmDisciplina(self, nome, disciplina):
+        aux = controleAcademico.buscaDisciplina(nome, disciplina)
+        media = (aux.nota1 + aux.nota2) / 2
+        return media
 
     def visualizacaoCompletaDeAluno(self, aluno):
         if self.front:
@@ -267,10 +265,23 @@ class List:
 
             return "O Aluno não está cadastrado no controle acadêmico ou você digitou o nome dele errado!"
 
+    def alunosReprovados(self, disciplina):
+        output = "Reprovados em {}:\n".format(disciplina)
+        if self.front:
+            aux = self.front
+
+            while (aux != None):
+                if (self.visualizarMediaEmDisciplina(aux.aluno.nomeAluno, disciplina) < 7):
+                    output += "{}\n".format(aux.aluno.nomeAluno)
+                    return output
+
+                aux = aux.next
 
 controleAcademico = List()
 choose = -1
 continuaMenu = 1
+
+print(controleAcademico.aluno.nomeAluno)
 
 while (continuaMenu != 0):
     print("-" * 70)
@@ -310,7 +321,7 @@ while (continuaMenu != 0):
     elif (choose == 5):
         # 5 - Remover disciplina
 
-        controleAcademico.removerDisciplina(pedeInfo(2) , pedeInfo(1))
+        controleAcademico.removerDisciplina(pedeInfo(1), pedeInfo(2))
         print()
 
     elif (choose == 6): #FUNCIONA ok
@@ -320,26 +331,26 @@ while (continuaMenu != 0):
         controleAcademico.removerNota()
         print()
 
-    elif (choose == 7): #FUNCIONA
+    elif (choose == 7): #FUNCIONA ok
         # 7 - Atualizar dados do aluno
 
         print("Atualizar dados do aluno, no nosso caso o nome dele apenas")
-        controleAcademico.buscaAluno()
-        var = input("Digite o novo nome do aluno: ")
-        controleAcademico.front.aluno.nomeAluno = var
-        print("O atual nome do al")
+        controleAcademico.buscaAluno(pedeInfo(1))
+        novoNome = input("Digite o novo nome do aluno: ")
+        controleAcademico.front.aluno.nomeAluno = novoNome
+        print(f"Nome do aluno corrigido para {novoNome}")
         print()
 
-    elif (choose == 8): #FUNCIONA
+    elif (choose == 8): #FUNCIONA ok
         # 8 - Atualizar disciplina de aluno
 
         print("Atualizar disciplina do aluno.(no caso o nome da disciplina)")
         disciplina = controleAcademico.buscaDisciplina()
-        disciplina.nomeDisc = pedeInfo(2)
+        disciplina.nomeDisc = input("Digite o nome da disciplina corrigido: ")
         print("O nome da disciplina foi alterado para: ", disciplina.nomeDisc)
         print()
 
-    elif (choose == 9):
+    elif (choose == 9): #funciona ok
         # 9 - Atualizar nota de disciplina
 
         print("Atualizar nota de disciplina de aluno")
@@ -347,23 +358,21 @@ while (continuaMenu != 0):
 
         print()
 
-    elif (choose == 10):
+    elif (choose == 10): #funcionando ok
 
-        #aluno = input("Digite o nome do aluno: ")
-        #disciplina = input("digite o nome da disciplina: ")
-
-        print(controleAcademico.visualizarMediaEmDisciplina(pedeInfo(1), pedeInfo(2)))
+        print("A média é: ", controleAcademico.visualizarMediaEmDisciplina(pedeInfo(1), pedeInfo(2)))
         print()
 
     elif (choose == 11):
         print("Visualizar os nomes dos alunos que estão com média menor que 7")
+        controleAcademico.alunosReprovados(pedeInfo(2))
         print()
 
     elif (choose == 12):
         print("Visualizar os nomes dos alunos que estão com média maior ou igual a 7")
         print()
 
-    elif (choose == 13): #funcionando
+    elif (choose == 13): #funcionando ok
 
         print(controleAcademico.visualizacaoCompletaDeAluno(pedeInfo(1)))
         print()
