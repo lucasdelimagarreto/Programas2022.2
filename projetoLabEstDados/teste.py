@@ -270,8 +270,21 @@ class List:
         if self.front:
             aux = self.front
 
-            while (aux != None):
-                if (self.visualizarMediaEmDisciplina(aux.aluno.nomeAluno, disciplina) < 7):
+            while (aux):
+                if (self.visualizarMediaEmDisciplina(aux.aluno.nomeAluno, disciplina) < 7.0):
+                    output += "{}\n".format(aux.aluno.nomeAluno)
+                    return output
+
+                aux = aux.next
+
+    def alunosAprovados(self, disciplina):
+        output = "Aprovados em {}:\n".format(disciplina)
+
+        if self.front:
+            aux = self.front
+
+            while (aux):
+                if (self.visualizarMediaEmDisciplina(aux.aluno.nomeAluno, disciplina) >= 7.0):
                     output += "{}\n".format(aux.aluno.nomeAluno)
                     return output
 
@@ -280,8 +293,6 @@ class List:
 controleAcademico = List()
 choose = -1
 continuaMenu = 1
-
-print(controleAcademico.aluno.nomeAluno)
 
 while (continuaMenu != 0):
     print("-" * 70)
@@ -296,7 +307,7 @@ while (continuaMenu != 0):
     if (choose == 1): #FUNCIONA ok
         # 1 - Cadastrar aluno
         controleAcademico.enqueueAluno(pedeInfo(1))
-        print("Aluno de nome",controleAcademico.front.aluno.nomeAluno, " cadastrado")
+        #print("Aluno de nome",controleAcademico.front.aluno.nomeAluno, " cadastrado")
         print()
 
     elif (choose == 2): #FUNCIONA ok
@@ -363,13 +374,12 @@ while (continuaMenu != 0):
         print("A média é: ", controleAcademico.visualizarMediaEmDisciplina(pedeInfo(1), pedeInfo(2)))
         print()
 
-    elif (choose == 11):
-        print("Visualizar os nomes dos alunos que estão com média menor que 7")
-        controleAcademico.alunosReprovados(pedeInfo(2))
+    elif (choose == 11): #funcionando ok
+        print(controleAcademico.alunosReprovados(pedeInfo(2)))
         print()
 
-    elif (choose == 12):
-        print("Visualizar os nomes dos alunos que estão com média maior ou igual a 7")
+    elif (choose == 12): #funcionando ok
+        print(controleAcademico.alunosAprovados(pedeInfo(2)))
         print()
 
     elif (choose == 13): #funcionando ok
