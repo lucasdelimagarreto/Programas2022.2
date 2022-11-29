@@ -56,7 +56,6 @@ class ListaDisciplinas:
             disciplina.next.anterior = disciplina.anterior
         print("Aluno removido com sucesso da disciplina")
 
-#busca disciplina está recebendo a lista de disciplina do aluno
     def buscaDisciplina(self,disciplina):
 
         aux = self.frente
@@ -306,47 +305,37 @@ while (continuaMenu != 0):
     print("-" * 70)
     choose = int(input("Digite um número: "))
 
-    #1 e para pedir nome e 2 para pedir disciplina  controleAcademico.pedeInfo(X)
 
-    if (choose == 1): #FUNCIONA ok
-        # 1 - Cadastrar aluno
+    if (choose == 1):
         controleAcademico.enqueueAluno(pedeInfo(1))
-        #print("Aluno de nome",controleAcademico.front.aluno.nomeAluno, " cadastrado")
         print()
 
-    elif (choose == 2): #FUNCIONA ok
-        # 2 - Cadastrar disciplinas
-
+    elif (choose == 2): 
         controleAcademico.inserirDisciplina(pedeInfo(1))
         print()
 
-    elif (choose == 3): #FUNCIONA ok
-        # 3 - Cadastrar notas em disciplina
+    elif (choose == 3): 
         print("Cadastrar notas!")
         controleAcademico.inserirNota()
         print()
 
-    elif (choose == 4): #FUNCIONA ok
-        # 4 - Remover aluno
-
+    elif (choose == 4): 
+        
         controleAcademico.removeAluno(pedeInfo(1))
         print()
 
-    elif (choose == 5): #FUNCIONA ok
-        # 5 - Remover disciplina
-
+    elif (choose == 5):
+        
         controleAcademico.removerDisciplina(pedeInfo(1), pedeInfo(2))
         print()
 
-    elif (choose == 6): #FUNCIONA ok
-        # 6 - Remover nota de disciplina
+    elif (choose == 6): 
 
         print("remover nota da disciplina do aluno")
         controleAcademico.removerNota()
         print()
 
-    elif (choose == 7): #FUNCIONA ok
-        # 7 - Atualizar dados do aluno
+    elif (choose == 7): 
 
         print("Atualizar dados do aluno, no nosso caso o nome dele apenas")
         aux = controleAcademico.buscaAluno(pedeInfo(1))
@@ -355,8 +344,7 @@ while (continuaMenu != 0):
         print(f"Nome do aluno corrigido para {novoNome}")
         print()
 
-    elif (choose == 8): #FUNCIONA ok
-        # 8 - Atualizar disciplina de aluno
+    elif (choose == 8):
 
         print("Atualizar disciplina do aluno.(no caso o nome da disciplina)")
         disciplina = controleAcademico.buscaAluno(pedeInfo(1)).aluno.listaDisciplinas.buscaDisciplina(pedeInfo(2))
@@ -364,39 +352,35 @@ while (continuaMenu != 0):
         print("O nome da disciplina foi alterado para: ", disciplina.nomeDisc)
         print()
 
-    elif (choose == 9): #funciona ok
-        # 9 - Atualizar nota de disciplina
+    elif (choose == 9):
 
         print("Atualizar nota de disciplina de aluno")
         controleAcademico.inserirNota()
 
         print()
 
-    elif (choose == 10): #funciona ok
-        # 10 - Visualize a média de um aluno
+    elif (choose == 10):
+        
         aux = controleAcademico.buscaAluno(pedeInfo(1)).aluno.listaDisciplinas
         print("A média é: ", aux.visualizarMediaEmDisciplina(pedeInfo(2)))
         print()
 
     elif (choose == 11): 
-        # 11 - Visualize quais alunos estão com a média menor que 7
 
         print(controleAcademico.alunosReprovados(pedeInfo(2)))
         print()
 
     elif (choose == 12): 
-        # 12 - Visualize quais alunos estão com média maior ou igual a 7
 
         print(controleAcademico.alunosAprovados(pedeInfo(2)))
         print()
 
     elif (choose == 13): 
-        # 13 - Visualize as notas das disciplinas cadastradas em um aluno
+
         print(controleAcademico.visualizacaoCompletaDeAluno(pedeInfo(1)))
         print()
 
     else:
-        # isso e definitivamente a unica coisa que funcionou sem erros
 
         print("Digite um número válido!")
 
