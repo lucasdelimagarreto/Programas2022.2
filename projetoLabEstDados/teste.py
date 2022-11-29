@@ -81,6 +81,16 @@ class ListaDisciplinas:
 
         return output
 
+    def visualizarMediaEmDisciplina(self, disciplina):
+        aux = self.buscaDisciplina(disciplina)
+        if(aux.nota1 == None):
+            return "Não é possivel calcular a média pois o aluno não possui a primeira nota da disciplina"
+        elif(aux.nota2 == None):
+            return "Não é possivel calcular a média pois o aluno não possui a segunda nota da disciplina"
+        else:    
+            media = (aux.nota1 + aux.nota2) / 2
+            return media
+
 class Aluno:
 
     def __init__(self, nomeAluno: str):
@@ -248,15 +258,6 @@ class List:
                     print("Digite um numero entre 1 e 2.")
                     aux = True
 
-    def visualizarMediaEmDisciplina(self):
-        if(self.nota1 == None):
-            return "Não é possivel calcular a média pois o aluno não possui a primeira nota da disciplina"
-        elif(self.nota2 == None):
-            return "Não é possivel calcular a média pois o aluno não possui a segunda nota da disciplina"
-        else:    
-            media = (self.nota1 + self.nota2) / 2
-            return media
-
     def visualizacaoCompletaDeAluno(self, aluno):
         aux = self.buscaAluno(aluno)
         temp = aux.aluno.listaDisciplinas.frente
@@ -271,24 +272,27 @@ class List:
             aux = self.front
 
             while (aux):
-                if (self.visualizarMediaEmDisciplina(aux.aluno.nomeAluno, disciplina) < 7.0):
+                if (aux.aluno.listaDisciplinas.visualizarMediaEmDisciplina(disciplina) < 7.0):
                     output += "{}\n".format(aux.aluno.nomeAluno)
                     return output
 
                 aux = aux.next
+        else:
+            print("Não ha alunos registrados!")
 
     def alunosAprovados(self, disciplina):
         output = "Aprovados em {}:\n".format(disciplina)
-
         if self.front:
             aux = self.front
 
             while (aux):
-                if (self.visualizarMediaEmDisciplina(aux.aluno.nomeAluno, disciplina) >= 7.0):
+                if (aux.aluno.listaDisciplinas.visualizarMediaEmDisciplina(disciplina) >= 7.0):
                     output += "{}\n".format(aux.aluno.nomeAluno)
                     return output
 
                 aux = aux.next
+        else:
+            print("Não ha alunos registrados!")
 
 controleAcademico = List()
 choose = -1
@@ -370,8 +374,8 @@ while (continuaMenu != 0):
 
     elif (choose == 10): #funciona ok
         # 10 - Visualize a média de um aluno
-        aux = controleAcademico.buscaAluno(pedeInfo(1)).aluno.listaDisciplinas.buscaDisciplina(pedeInfo(2))
-        print("A média é: ", aux.visualizarMediaEmDisciplina())
+        aux = controleAcademico.buscaAluno(pedeInfo(1)).aluno.listaDisciplinas
+        print("A média é: ", aux.visualizarMediaEmDisciplina(pedeInfo(2)))
         print()
 
     elif (choose == 11): 
