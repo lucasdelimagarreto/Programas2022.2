@@ -44,22 +44,20 @@ class ListaDisciplinas:
     
     def dequeueDisciplina(self,disciplina):
 
-        aux = self.buscaDisciplina(disciplina)
-
         if(self.isEmpty):
             return "O aluno não está matriculado em nenhuma disciplina!"
-        elif(aux.nomeDisc == self.frente):
-            aux = aux.proximo
-            aux.anterior = None
-        elif(not aux):
+        elif(disciplina.nomeDisc == self.frente):
+            disciplina = disciplina.proximo
+            disciplina.anterior = None
+        elif(not disciplina):
             return "Esse aluno não está matriculado nessa disciplina, logo não pode ser removido dela"
         else:
-            aux.anterior.next = aux.next
-            aux.next.anterior = aux.anterior
+            disciplina.anterior.next = disciplina.next
+            disciplina.next.anterior = disciplina.anterior
         print("Aluno removido com sucesso da disciplina")
 
 #busca disciplina está recebendo a lista de disciplina do aluno
-    def buscaDisciplina(self, disciplina):
+    def buscaDisciplina(self,disciplina):
 
         aux = self.frente
 
@@ -67,7 +65,6 @@ class ListaDisciplinas:
             if (aux.nomeDisc == disciplina):
                 return aux
             aux = aux.proximo
-        return False
 
     def __str__(self):
         output = ""
@@ -202,12 +199,15 @@ class List:
     def removeAluno(self, aluno):
 
         if self.isEmpty():
-            print("O Controle Acadêmico está vazio, não há alunos cadastrados")
-
+            print("O Controle Acadêmico está vazio, não há alunos cadastrados")  
+            return
         elif self.front.aluno.nomeAluno == aluno:
-            self.front = self.front.next
-            self.front.anteiror = None
-
+            if (self.__tamanho == 1):
+                self.front = None
+                print("Não há mais alunos cadastrados")
+            else:
+                self.front = self.front.next
+                self.front.anteiror = None
         else:
             aux = self.buscaAluno(aluno)
             aux.anterior.next = aux.next
@@ -218,11 +218,12 @@ class List:
     def removerDisciplina(self, nome, disciplina):       
         
         aux = self.buscaAluno(nome)
-        aux.aluno.listaDisciplinas.dequeueDisciplina(disciplina)                
-
+        temp = aux.aluno.listaDisciplinas.buscaDisciplina(disciplina)
+        aux.aluno.listaDisciplinas.dequeueDisciplina(temp)
+                     
     def removerNota(self):
 
-        temp = self.buscaAluno(pedeInfo(1)).listaDisciplinas.buscaDisciplina(pedeInfo(2))
+        temp = self.buscaAluno(pedeInfo(1)).aluno.listaDisciplinas.buscaDisciplina(pedeInfo(2))
         aux = True
 
         if (temp.nota1 == None and temp.nota2 == None):
@@ -247,32 +248,22 @@ class List:
                     print("Digite um numero entre 1 e 2.")
                     aux = True
 
-    #def rear(self):
-    #   return self.rear
-
-    def visualizarMediaEmDisciplina(self, nome, disciplina):
-        aux = self.buscaAluno(nome).aluno.listaDisciplina.buscaDisciplina(disciplina)
-        if(aux.nota1 == None):
+    def visualizarMediaEmDisciplina(self):
+        if(self.nota1 == None):
             return "Não é possivel calcular a média pois o aluno não possui a primeira nota da disciplina"
-        elif(aux.nota2 == None):
+        elif(self.nota2 == None):
             return "Não é possivel calcular a média pois o aluno não possui a segunda nota da disciplina"
         else:    
-            media = (aux.nota1 + aux.nota2) / 2
+            media = (self.nota1 + self.nota2) / 2
             return media
 
     def visualizacaoCompletaDeAluno(self, aluno):
         aux = self.buscaAluno(aluno)
         temp = aux.aluno.listaDisciplinas.frente
-        while (temp != None):
-            #alguém pode completar esse print, eu não sou bom com prints 
-            #a função já está percorrendo todas as diciplinas só basta 
-            #printar os atributos de cada disciplina, o codigo para acessar cada um seria
-            # disciplina : temp.nomeDisc , nota1 : temp.nota1 ...
-            print("Disciplina")
+        print(f"Aluno: {aux.aluno.nomeAluno}\n")
+        while (temp != None):            
+            print(f"Disciplina: {temp.nomeDisc}\nNota 1: {temp.nota1}\nNota 2: {temp.nota2}")
             temp = temp.proximo
-
-     
-    
 
     def alunosReprovados(self, disciplina):
         output = "Reprovados em {}:\n".format(disciplina)
@@ -331,13 +322,13 @@ while (continuaMenu != 0):
         controleAcademico.inserirNota()
         print()
 
-    elif (choose == 4):
+    elif (choose == 4): #FUNCIONA ok
         # 4 - Remover aluno
-        #print("Cadastrar notas!")
+
         controleAcademico.removeAluno(pedeInfo(1))
         print()
 
-    elif (choose == 5):
+    elif (choose == 5): #FUNCIONA ok
         # 5 - Remover disciplina
 
         controleAcademico.removerDisciplina(pedeInfo(1), pedeInfo(2))
@@ -354,9 +345,9 @@ while (continuaMenu != 0):
         # 7 - Atualizar dados do aluno
 
         print("Atualizar dados do aluno, no nosso caso o nome dele apenas")
-        controleAcademico.buscaAluno(pedeInfo(1))
+        aux = controleAcademico.buscaAluno(pedeInfo(1))
         novoNome = input("Digite o novo nome do aluno: ")
-        controleAcademico.front.aluno.nomeAluno = novoNome
+        aux.aluno.nomeAluno = novoNome
         print(f"Nome do aluno corrigido para {novoNome}")
         print()
 
@@ -364,7 +355,7 @@ while (continuaMenu != 0):
         # 8 - Atualizar disciplina de aluno
 
         print("Atualizar disciplina do aluno.(no caso o nome da disciplina)")
-        disciplina = controleAcademico.buscaDisciplina()
+        disciplina = controleAcademico.buscaAluno(pedeInfo(1)).aluno.listaDisciplinas.buscaDisciplina(pedeInfo(2))
         disciplina.nomeDisc = input("Digite o nome da disciplina corrigido: ")
         print("O nome da disciplina foi alterado para: ", disciplina.nomeDisc)
         print()
@@ -377,25 +368,32 @@ while (continuaMenu != 0):
 
         print()
 
-    elif (choose == 10): #funcionando ok
-
-        print("A média é: ", controleAcademico.visualizarMediaEmDisciplina(pedeInfo(1), pedeInfo(2)))
+    elif (choose == 10): #funciona ok
+        # 10 - Visualize a média de um aluno
+        aux = controleAcademico.buscaAluno(pedeInfo(1)).aluno.listaDisciplinas.buscaDisciplina(pedeInfo(2))
+        print("A média é: ", aux.visualizarMediaEmDisciplina())
         print()
 
-    elif (choose == 11): #funcionando ok
+    elif (choose == 11): 
+        # 11 - Visualize quais alunos estão com a média menor que 7
+
         print(controleAcademico.alunosReprovados(pedeInfo(2)))
         print()
 
-    elif (choose == 12): #funcionando ok
+    elif (choose == 12): 
+        # 12 - Visualize quais alunos estão com média maior ou igual a 7
+
         print(controleAcademico.alunosAprovados(pedeInfo(2)))
         print()
 
-    elif (choose == 13): #funcionando ok
-
+    elif (choose == 13): 
+        # 13 - Visualize as notas das disciplinas cadastradas em um aluno
         print(controleAcademico.visualizacaoCompletaDeAluno(pedeInfo(1)))
         print()
 
     else:
+        # isso e definitivamente a unica coisa que funcionou sem erros
+
         print("Digite um número válido!")
 
     continuaMenu = int(input("Deseja sair do Programa agora?\nDigite 0 para sim e 1 para não: "))
